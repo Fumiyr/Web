@@ -1,0 +1,730 @@
+/* =========================================
+   OLIV creative - CSS Stylesheet
+   ========================================= */
+
+/* -- CSS Variables -- */
+:root {
+    --clr-white: #ffffff;
+    --clr-light: #f9f9f9;
+    --clr-gray: #f4f4f4;
+    --clr-black: #0a0a0a;
+    --clr-black-light: #181818;
+    --clr-accent: #c0a466; /* Gold/Beige replaces Yellow */
+    --clr-accent-hover: #a88d55;
+    
+    --font-main: 'Montserrat', sans-serif;
+    --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* -- Reset & General -- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--clr-white);
+    color: var(--clr-black);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 88%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+section.section-padding {
+    padding: 120px 0;
+}
+
+.text-center { text-align: center; }
+.mt-2 { margin-top: 1rem; }
+.mt-4 { margin-top: 2rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mb-section { margin-bottom: 80px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+.bg-light { background-color: var(--clr-light); }
+.bg-gray { background-color: var(--clr-gray); }
+
+/* Typography */
+h1, h2, h3, h4 {
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+p {
+    color: #444;
+    font-weight: 300;
+    font-size: 1.1rem;
+}
+
+.lead-text {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--clr-black);
+}
+
+.text-muted {
+    font-size: 1rem;
+    color: #666;
+}
+
+.max-width-text {
+    max-width: 800px;
+}
+
+.highlight {
+    color: var(--clr-accent);
+}
+
+.divider {
+    width: 50px;
+    height: 3px;
+    background-color: var(--clr-accent);
+    margin: 20px 0 30px;
+    border-radius: 2px;
+}
+
+.divider.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* -- Buttons -- */
+.btn {
+    display: inline-block;
+    padding: 16px 36px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 0; /* Minimalist sharp edges */
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: var(--transition);
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--clr-black);
+    color: var(--clr-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--clr-accent);
+    color: var(--clr-white);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--clr-black);
+    color: var(--clr-black);
+}
+
+.btn-outline:hover {
+    background-color: var(--clr-black);
+    color: var(--clr-white);
+}
+
+/* -- Header -- */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 25px 0;
+    z-index: 1000;
+    transition: var(--transition);
+    background-color: transparent;
+}
+
+header.scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 15px 0;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
+}
+
+/* Text color logic inside header: we need black text if scrolled or if hero isn't dark enough */
+header .nav-links a {
+    color: var(--clr-white);
+}
+
+header.scrolled .nav-links a {
+    color: var(--clr-black);
+}
+
+header .btn-outline {
+    border-color: var(--clr-white);
+    color: var(--clr-white);
+}
+header.scrolled .btn-outline {
+    border-color: var(--clr-black);
+    color: var(--clr-black);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.img-logo {
+    height: 35px;
+    filter: brightness(0) invert(1); /* white initially */
+    transition: var(--transition);
+}
+
+header.scrolled .img-logo {
+    filter: none; /* back to original (assuming original is dark/black) */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    background-color: var(--clr-accent);
+    bottom: 0;
+    left: 0;
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--clr-white);
+    cursor: pointer;
+}
+header.scrolled .mobile-menu-btn {
+    color: var(--clr-black);
+}
+
+/* -- Hero Section -- */
+.hero {
+    height: 100vh;
+    min-height: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: var(--clr-white);
+}
+
+.hero-slides {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    opacity: 0;
+    transform: scale(1.02);
+    transition: opacity 1.8s ease, transform 6s ease;
+    will-change: opacity, transform;
+}
+
+.hero-slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to right, rgba(10,10,10,0.8), rgba(10,10,10,0.3));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+/* Hover swap (mono -> color) */
+.hover-swap {
+    position: relative;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+.hover-swap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+    transition: opacity 0.8s ease;
+}
+
+.hover-swap-hover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+}
+
+.hover-swap:hover .hover-swap-hover {
+    opacity: 1;
+}
+
+.hero h1 {
+    font-size: 4.5rem;
+    font-weight: 300;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.hero h1 span.highlight {
+    font-weight: 600;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    max-width: 600px;
+    color: rgba(255,255,255,0.9);
+}
+
+/* -- Split Grid (Used in multiple sections) -- */
+.split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.split-grid.reverse {
+    /* Using DOM order or CSS order depending on standard */
+}
+
+@media(min-width: 993px) {
+    .split-grid.reverse .text-content { order: 2; }
+    .split-grid.reverse .image-content { order: 1; }
+}
+
+.text-content h2 {
+    font-size: 3rem;
+    font-weight: 300;
+}
+
+.image-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px; /* minimal curve */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    filter: grayscale(20%);
+    transition: var(--transition);
+}
+
+.image-content:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.02);
+}
+
+.img-aesthetic img {
+    aspect-ratio: 4/5;
+    object-fit: cover;
+}
+
+/* Values List */
+.values-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.values-list li {
+    font-size: 1.1rem;
+    color: #444;
+    font-weight: 300;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.values-list li i {
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* -- Footer -- */
+footer {
+    background-color: var(--clr-black);
+    color: var(--clr-white);
+    padding: 80px 0 30px;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.footer-logo {
+    height: 40px;
+    filter: brightness(0) invert(1);
+    margin-bottom: 20px;
+}
+
+.footer-brand p {
+    color: #999;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-socials a {
+    color: var(--clr-white);
+    font-size: 1.5rem;
+    transition: var(--transition);
+}
+
+.footer-socials a:hover {
+    color: var(--clr-accent);
+    transform: translateY(-5px);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 30px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* -- Interactivity & Animations -- */
+.reveal, .reveal-mission {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.reveal.active, .reveal-mission.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.fade-up {
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s;
+}
+
+.fade-left {
+    transform: translateX(-40px);
+    transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s;
+}
+
+.fade-right {
+    transform: translateX(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s;
+}
+
+.reveal.active.fade-up,
+.reveal.active.fade-left,
+.reveal.active.fade-right {
+    transform: translate(0);
+}
+
+/* Custom Animation for Mission (faster title, smooth desc) */
+.title-fast {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.desc-slow {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s;
+}
+
+.reveal-mission.active .title-fast {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-mission.active .desc-slow {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* -- Modal Overlay (WhatsApp Form) -- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--clr-white);
+    width: 90%;
+    max-width: 600px;
+    padding: 50px;
+    border-radius: 4px;
+    position: relative;
+    transform: translateY(-30px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.modal.show .modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 28px;
+    font-weight: 300;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: var(--clr-black);
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.modal-header h2 {
+    font-size: 2rem;
+    font-weight: 300;
+}
+
+.modal-header p {
+    color: #666;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.contact-form .form-group {
+    margin-bottom: 25px;
+}
+
+.contact-form .row {
+    display: flex;
+    gap: 20px;
+}
+
+.contact-form .half {
+    flex: 1;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--clr-black-light);
+}
+
+.contact-form input,
+.contact-form select {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: var(--clr-light);
+    transition: var(--transition);
+}
+
+.contact-form input:focus,
+.contact-form select:focus {
+    outline: none;
+    border-color: var(--clr-accent);
+    background-color: var(--clr-white);
+}
+
+.btn-whatsapp {
+    width: 100%;
+    background-color: #25D366;
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    padding: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-whatsapp:hover {
+    background-color: #1ebe57;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+}
+
+.btn-email {
+    width: 100%;
+    background-color: var(--clr-black);
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    padding: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-email:hover {
+    background-color: var(--clr-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-success {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.contact-success h3 {
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.contact-success p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.contact-form input.error,
+.contact-form select.error {
+    border-color: #e63946;
+    background-color: #fff5f5;
+}
+
+/* -- Responsiveness -- */
+@media(max-width: 992px) {
+    .split-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+    
+    .hero h1 {
+        font-size: 3.5rem;
+    }
+    
+    .nav-links, header .btn-outline {
+        display: none;
+    }
+    
+    .mobile-menu-btn {
+        display: block;
+    }
+}
+
+@media(max-width: 768px) {
+    section.section-padding {
+        padding: 80px 0;
+    }
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+    .contact-form .row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .text-content h2 {
+        font-size: 2.3rem;
+    }
+}

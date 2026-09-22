@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autozone - Estoque</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="app-header__brand">
+      <span class="app-header__icon">📦</span>
+      <div>
+        <div class="app-header__title">Estoque <span>Autozone</span></div>
+        <div class="app-header__subtitle">Controle interno de produtos</div>
+      </div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" title="Alternar tema">☀️</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="app-main">
+
+    <!-- Stat Cards -->
+    <section class="stat-grid" id="statGrid">
+      <div class="stat-card">
+        <div class="stat-card__label">Total de Produtos</div>
+        <div class="stat-card__value" id="statTotal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Itens em Estoque</div>
+        <div class="stat-card__value" id="statEstoque">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Estoque Baixo</div>
+        <div class="stat-card__value" id="statBaixo">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Valor Total</div>
+        <div class="stat-card__value" id="statValor">R$ 0</div>
+      </div>
+    </section>
+
+    <!-- Toolbar -->
+    <div class="section-toolbar">
+      <h2 class="section-toolbar__title">Produtos em Estoque</h2>
+      <button class="btn-add" onclick="abrirModal()">+ Adicionar Item</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+      <table id="tabela">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Produto</th>
+            <th>Categoria</th>
+            <th>Qtd.</th>
+            <th>Preço Unit.</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h2>Novo Item</h2>
+
+      <label>Produto</label>
+      <input type="text" id="inputProduto" placeholder="Ex: Filtro de Óleo" />
+
+      <label>Categoria</label>
+      <input type="text" id="inputCategoria" placeholder="Ex: Filtros" />
+
+      <label>Quantidade</label>
+      <input type="number" id="inputQtd" min="0" placeholder="0" />
+
+      <label>Preço Unitário (R$)</label>
+      <input type="number" id="inputPreco" min="0" step="0.01" placeholder="0,00" />
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+        <button class="btn-save" onclick="salvarItem()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const itens = [
+      { produto: "Óleo Motor 5W30",    categoria: "Lubrificantes", qtd: 45, preco: 38.90 },
+      { produto: "Filtro de Óleo",     categoria: "Filtros",       qtd: 30, preco: 22.50 },
+      { produto: "Pastilha de Freio",  categoria: "Freios",        qtd: 8,  preco: 89.00 },
+      { produto: "Correia Dentada",    categoria: "Motor",         qtd: 0,  preco: 120.00 },
+      { produto: "Vela de Ignição",    categoria: "Elétrica",      qtd: 60, preco: 15.00 },
+      { produto: "Fluido de Freio",    categoria: "Fluidos",       qtd: 5,  preco: 18.00 },
+    ];
+
+    function statusBadge(qtd) {
+      if (qtd === 0)  return `<span class="badge zerado">Zerado</span>`;
+      if (qtd <= 8)   return `<span class="badge baixo">Baixo</span>`;
+      return `<span class="badge ok">OK</span>`;
+    }
+
+    function atualizarStats() {
+      const total = itens.length;
+      const estoque = itens.reduce((s, i) => s + i.qtd, 0);
+      const baixo = itens.filter(i => i.qtd > 0 && i.qtd <= 8).length;
+      const valor = itens.reduce((s, i) => s + (i.qtd * i.preco), 0);
+
+      document.getElementById("statTotal").textContent = total;
+      document.getElementById("statEstoque").textContent = estoque;
+      document.getElementById("statBaixo").textContent = baixo;
+      document.getElementById("statValor").textContent =
+        "R$ " + valor.toFixed(2).replace(".", ",");
+    }
+
+    function renderTabela() {
+      const tbody = document.getElementById("tbody");
+      tbody.innerHTML = "";
+      itens.forEach((item, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td data-label="#">${i + 1}</td>
+          <td data-label="Produto">${item.produto}</td>
+          <td data-label="Categoria">${item.categoria}</td>
+          <td data-label="Qtd.">${item.qtd}</td>
+          <td data-label="Preço">R$ ${item.preco.toFixed(2).replace(".", ",")}</td>
+          <td data-label="Status">${statusBadge(item.qtd)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      atualizarStats();
+    }
+
+    function abrirModal() {
+      document.getElementById("modalOverlay").classList.add("active");
+    }
+
+    function fecharModal() {
+      document.getElementById("modalOverlay").classList.remove("active");
+      document.getElementById("inputProduto").value = "";
+      document.getElementById("inputCategoria").value = "";
+      document.getElementById("inputQtd").value = "";
+      document.getElementById("inputPreco").value = "";
+    }
+
+    function salvarItem() {
+      const produto   = document.getElementById("inputProduto").value.trim();
+      const categoria = document.getElementById("inputCategoria").value.trim();
+      const qtd       = parseInt(document.getElementById("inputQtd").value) || 0;
+      const preco     = parseFloat(document.getElementById("inputPreco").value) || 0;
+
+      if (!produto) {
+        alert("Informe o nome do produto.");
+        return;
+      }
+
+      itens.push({ produto, categoria, qtd, preco });
+      renderTabela();
+      fecharModal();
+    }
+
+    // Fechar modal clicando fora
+    document.getElementById("modalOverlay").addEventListener("click", function(e) {
+      if (e.target === this) fecharModal();
+    });
+
+    // ---------- Dark / Light Toggle ----------
+    const toggle = document.getElementById("themeToggle");
+
+    function setTheme(dark) {
+      document.body.classList.toggle("dark", dark);
+      toggle.textContent = dark ? "🌙" : "☀️";
+      localStorage.setItem("autozone-theme", dark ? "dark" : "light");
+    }
+
+    toggle.addEventListener("click", () => {
+      setTheme(!document.body.classList.contains("dark"));
+    });
+
+    // Load saved theme
+    const saved = localStorage.getItem("autozone-theme");
+    if (saved === "dark") setTheme(true);
+
+    // Init
+    renderTabela();
+  </script>
+
+</body>
+</html>
